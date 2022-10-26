@@ -1,0 +1,17 @@
+O
+B-task
+I-task
+B-confirmation
+I-confirmation
+B-denial
+I-denial
+B-teach
+I-teach
+B-colour
+I-colour
+B-location
+I-location
+B-object
+I-object
+B-greeting
+I-greeting

@@ -1,0 +1,14 @@
+#goal definition
+sensor_msgs/Image mask
+sensor_msgs/Image reference_img
+sensor_msgs/Image depth_img
+string command
+uint32 place_image_x
+uint32 place_image_y
+float32 place_world_z
+---
+#result definition
+bool success
+---
+#feedback
+string status
