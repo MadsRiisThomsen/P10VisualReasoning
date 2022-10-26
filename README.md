@@ -1,5 +1,18 @@
-# P8LH7Grounding
+# P10VisualResoning
+This code is meant to run on the "ROS PC" as described in the AAU_franka_moveit repository: [LINK](https://github.com/HuchieWuchie/AAU_franka_moveit)
 
+It first uses the P8 project on the franka (TODO: reduce the amount of modules used), then the visual reasoning is custom/new code used for the project
+
+The P8 readmo doesnt mention it, but these modules need to be installed:
+modules to install:
+	websockets
+	jsonpickle
+	transformers
+	torch
+
+use pip3 install [module]
+
+#Readme from P8
 ## Compiling the Catkin Workspace
 There is a name conflict between the em and empy packages on python3, so run `pip3 uninstall em` and then `pip3 install empy`
 Python 3 is used for the Python modules. To ensure that Catkin uses Python 3 for compiling the packages, use 
@@ -14,41 +27,7 @@ If there is a problem with cv_bridge, it needs to be compiled for python 3. See 
 
 ---
 
-## For simulation
-This project contains a *webots* and *ur_e_webots* folder. The *webots* folder contains the files related to WeBots, including the world file. The *ur_e_wobots* is a catkin package obtained from [here](https://github.com/cyberbotics/webots/tree/master/projects/robots/universal_robots/resources/ros_package/ur_e_webots), which acts as a bridge between WeBots and ROS, such as publishing transforms and handling MoveIt commands.
-
-To get up and running:
-
-1. Install webots (https://cyberbotics.com/doc/guide/installation-procedure)
-
-2. Install webots_ros (I think this is actually optional, just includes example files): `sudo apt install ros-melodic-webots-ros`
-
-3. Install ROS MoveIt - just run `sudo apt install ros-melodic-moveit` or look [here](http://docs.ros.org/en/melodic/api/moveit_tutorials/html/doc/getting_started/getting_started.html) if you are having problems.
-
-4. Install UR-ROS drivers (https://github.com/ros-industrial/universal_robot/tree/melodic-devel)
-   - You have to build from source. Make a new catkin workspace and build it there.
-   - Remember to install for the correct ROS distro
-
-5. Compile cv_bridge to work with Python 3 (https://github.com/ros-perception/vision_opencv/tree/melodic)
-
-6. Make sure that the catkin workspace that **this** project/package is inside is built and sourced.
-
-7. (Re)build the main workspace with the UR-ROS and cv_bridge ws sourced.
-
-### Test that you got it right / it is working
-1. Start roscore
-2. Start webots and open the world (it is under the *webots/worlds* folder)
-3. In all terminals from now on, make sure to source ROS, your universal_robots ROS Industrial workspace and source the workspace that this project is in
-4. Run `roslaunch ur_e_webots ur5e_joint_limited.launch` - this acts as the WeBots controller and publishes transforms and so on
-5. Run `roslaunch ur5_e_moveit_config ur5_e_moveit_planning_execution.launch`
-6. Run `roslaunch ur5_e_moveit_config moveit_rviz.launch config:=true`
-7. The last command should open up RViz with MoveIt! The robot in WeBots and RViz should have the same pose, if everything worked as expected. You can now play around with planning trajectories in RViz, which should move the "real" WeBots simulation.
-
-Note that the controller in WeBots have to be set to `<extern>`. There is also a `ros` controller which enables interfacing directly with WeBots objects using topics / services. 
-
 ## Speech to text
-To get speech to text working, several libraries need to be installed - some compiled from source.
-
 For Azure Cognitive Services (what we are using now):
 1. `pip install azure-cognitiveservices-speech`
 
@@ -58,6 +37,9 @@ Make sure that ROS, cv_bridge, UR-ROS and this workspace is sourced when running
 2. `rosrun bin_picking moveit_interface_node.py` - IMPORTANT: Needs to be python 2!
 3. `Run dialog_flow.py` NOTE: The import paths for the dialog_flow.py does not allow it to be run from terminal, without the correct PYTHONPATH set. 
 To be able to run it without updating the import paths, source the ROS, cv_bridge and this workspace and start PyCharm and set all packages as "Sources root". Then run dialog_flow.py from PyCharm.
+
+## Run from terminal
+`export PYTHONPATH=${PYTHONPATH}:[path-to-catkin-ws]/src/grounding`
 
 If you want to visualize the robot in RViz: `roslaunch ur5_moveit_config moveit_rviz.launch config:=true`
 
