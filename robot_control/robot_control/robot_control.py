@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from unittest import result
 from vision_lib.vision_controller import ObjectInfo
 import rospy
@@ -8,13 +9,15 @@ from cv_bridge import CvBridge
 import numpy as np 
 import cv_bridge
 
-"""
-P10 UPDATES START
-"""
+
+##P10 UPDATES START
+
 import moveit_msgs
 import geometry_msgs
 from moveit_msgs.srv import GetPositionIK
 from moveit_msgs.msg import RobotTrajectory
+
+
 
 import fhMoveitUtils.moveit_utils as moveit
 
@@ -31,9 +34,9 @@ from fh_moveit_service.srv import moveitGripperOpenSrv, moveitGripperOpenSrvResp
 
 from fh_moveit_service import moveitMoveToNamedSrv
 
-"""
-P10 UPDATES END
-"""
+
+##P10 UPDATES END
+
 
 
 class RobotController:
@@ -151,6 +154,7 @@ class RobotController:
         return result.success
 
     def move_out_of_view(self):
+        """
         rospy.loginfo("Using out of view service")
 
         print(moveit.getCurrentState())
@@ -160,7 +164,7 @@ class RobotController:
         self.is_home = result
 
         return result.success
-
+        """
 
         self.client.wait_for_server()
 
