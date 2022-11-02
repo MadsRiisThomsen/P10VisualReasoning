@@ -944,15 +944,15 @@ class DialogFlow:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-n", "--ner_model", dest="ner_model_path", default="ner_pytorch_model.bin",
+    parser.add_argument("-n", "--ner_model", dest="ner_model_path", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/ner_pytorch_model.bin",
                         help="The path to the weight file for the NER model")
-    parser.add_argument("-t", "--tag_file", dest="tags_path", default="tags.txt",
+    parser.add_argument("-t", "--tag_file", dest="tags_path", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/tags.txt",
                         help="The path to the NER tags file")
-    parser.add_argument("-f", "--feature_model", dest="feature_model", default="feature_extraction.pth",
+    parser.add_argument("-f", "--feature_model", dest="feature_model", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/feature_extraction.pth",
                         help="The path to the feature extraction weight file")
-    parser.add_argument("-d", "--db", dest="grounding_database", default="grounding.db",
+    parser.add_argument("-d", "--db", dest="grounding_database", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/grounding.db",
                         help="The path to the grounding SQLite database")
-    parser.add_argument("-b", "--background", dest="background_image", default="background.png",
+    parser.add_argument("-b", "--background", dest="background_image", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/background.png",
                         help="The path to the background image")
     parser.add_argument("-w", "--ws_uri", dest="websocket_uri", default="ws://localhost:8765",
                         help="The URI to the websocket for the UI interface")

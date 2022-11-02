@@ -21,7 +21,7 @@ class NER:
             file_content = tag_file.read().strip()
             self.id_to_tag = file_content.splitlines()
         self.model = DistilBertForTokenClassification.from_pretrained('distilbert-base-cased', num_labels=len(self.id_to_tag))
-        self.model.load_state_dict(torch.load(model_path))
+        self.model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
         self.model.eval()
         self.tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-cased')
 

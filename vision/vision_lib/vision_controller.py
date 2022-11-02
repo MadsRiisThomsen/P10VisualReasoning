@@ -14,7 +14,7 @@ class VisionController:
             rospy.init_node("vision_test", anonymous=True)
         background_img = cv.imread(background_image_file)
         self.find_objects = FindObjects(background_img=background_img)
-        self.feature_extractor = FeatureExtractor(weights_dir=weights_path, on_gpu=True)
+        self.feature_extractor = FeatureExtractor(weights_dir=weights_path, on_gpu=False)
         self.camera = ROSCamera()
 
     def get_masks_with_features(self, debug=False):

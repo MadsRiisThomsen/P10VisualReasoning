@@ -21,6 +21,7 @@ from moveit_msgs.msg import RobotTrajectory
 
 import fhMoveitUtils.moveit_utils as moveit
 
+"""
 from fh_moveit_service.srv import moveitMoveToNamedSrv, moveitMoveToNamedSrvResponse
 from fh_moveit_service.srv import moveitPlanToNamedSrv, moveitPlanToNamedSrvResponse
 from fh_moveit_service.srv import moveitPlanFromPoseToPoseSrv, moveitPlanFromPoseToPoseSrvResponse
@@ -33,7 +34,9 @@ from fh_moveit_service.srv import moveitGripperCloseSrv, moveitGripperCloseSrvRe
 from fh_moveit_service.srv import moveitGripperOpenSrv, moveitGripperOpenSrvResponse
 
 from fh_moveit_service import moveitMoveToNamedSrv
+"""
 
+from fh_moveit_service.srv import *	
 
 ##P10 UPDATES END
 
