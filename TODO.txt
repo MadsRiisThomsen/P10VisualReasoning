@@ -1,0 +1,3 @@
+-Make the ner not use TTS and SST, all communcation should be in the terminal
+-Remake the dialog_flow.py, statemachine might be overkill, just a simple case by case flow
+
