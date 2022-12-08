@@ -22,7 +22,7 @@ from find_objects_lib.find_objects import ObjectInfo
 from ner_lib.command_builder import CommandBuilder, SpatialType, Task, TaskType, ObjectEntity as ObjectEntityType, SpatialDescription
 from ner_lib.ner import NER, EntityType
 from vision_lib.rs_camera_interface import RSCamera
-from vision_lib.ros_camera_interface import ROSCamera
+#from vision_lib.ros_camera_interface import ROSCamera
 from robot_control.robot_control import RobotController
 from grounding_lib.grounding import Grounding, GroundingErrorType, GroundingReturn
 from vision_lib.vision_controller import VisionController
@@ -97,7 +97,7 @@ def spatial_type_to_human_adjective(spatial_type: SpatialType):
 class DependencyContainer:
     def __init__(self, ner: NER, command_builder: CommandBuilder,
                  grounding: Grounding, speak,
-                 camera: ROSCamera, task_grounding: TaskGrounding,
+                 camera: RSCamera, task_grounding: TaskGrounding,
                  robot: RobotController, vision_controller: VisionController):
         self.ner = ner
         self.command_builder = command_builder
