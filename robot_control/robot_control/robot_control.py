@@ -3,10 +3,9 @@ from unittest import result
 from vision_lib.vision_controller import ObjectInfo
 import rospy
 import actionlib
-from bin_picking.msg import PickObjectAction, PickObjectGoal
 import cv2
 from cv_bridge import CvBridge
-import numpy as np 
+import numpy as np
 import cv_bridge
 
 
@@ -36,7 +35,7 @@ from fh_moveit_service.srv import moveitGripperOpenSrv, moveitGripperOpenSrvResp
 from fh_moveit_service import moveitMoveToNamedSrv
 """
 
-from fh_moveit_service.srv import *	
+from fh_moveit_service.srv import *
 
 ##P10 UPDATES END
 
@@ -83,7 +82,7 @@ class RobotController:
         fixture_3.orientation.w = 0.000
         """
 
-    
+
     def pick_up(self, object_info: ObjectInfo, rgb, depth):
         rospy.loginfo("Waiting for server")
         self.client.wait_for_server()
@@ -122,19 +121,19 @@ class RobotController:
         """
         rospy.loginfo("Using point service")
 
-        moveit.pointToNamed("named of fixture that matches with the detected object") 
-        
+        moveit.pointToNamed("named of fixture that matches with the detected object")
+
         Thinking that ObjectInfo should have a variable for which fixture.
         The camera could use classical cv to compute which fixture, no need for CNN for that
-        Ex: Find red cover, red cover is in fixture 1, 
-        from the setup and the camera pos we know where in the image fixture 1 would be, 
+        Ex: Find red cover, red cover is in fixture 1,
+        from the setup and the camera pos we know where in the image fixture 1 would be,
         so we look for red cover in an image, detect the pixel corrds, pixel coords will show what fixture it is
 
 
         have to use moveit.moveToPose(req) for cartesian coordinates
         req needs req.pose which is geometry_msgs.pose
 
-        
+
 
 
         return result.success

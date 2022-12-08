@@ -32,7 +32,6 @@ from task_grounding.task_grounding import TaskGrounding, TaskGroundingError, Tas
 from typing import Type, Callable, Any, NewType, List
 import random
 from little_helper_interfaces.msg import StringWithTimestamp
-from text_to_speech.srv import TextToSpeech
 
 
 def tasks_to_human_sentence(tasks: List[Task]):

@@ -2,7 +2,6 @@ import numpy as np
 import rospy
 from PIL import Image as pimg
 import actionlib
-from ur_e_webots.msg import GripperAction, GripperGoal
 from cv_bridge import CvBridge
 import pyrealsense2 as rs
 import cv2
