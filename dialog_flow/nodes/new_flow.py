@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 
 """
-BIG TODO:
--Change known tasks
--Figure out what to do with spatial relations (Probably still keep it)
+TODO:
+Decide where bottom cover, front cover, pcb and assembly fixtures will be
+Move the robot to the pose it needs for grasping the objects, implement them into the named positions
+(Might need new poses for stuff)
 
-Needs testing:
--Removed any web UI imports
--replaced ROSCamera with direct realsense interfacing
--replaced stt/tts with console i/o
-
-
-General: Probably some deprecated imports
+Test how the camera works
+Test how the grounding works (does it break the program when run on the robot?)
+Does console interface work?
+Does robot_contorl work, or did my implementation fuck it?
 """
 
 
