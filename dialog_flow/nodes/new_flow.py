@@ -475,7 +475,7 @@ class PerformTaskState(State):
 
         success = False
         if task.task_type == TaskType.PICK:
-            success = self.container.robot.pick_up(grounding_return.object_infos[0], np_rgb, np_depth)
+            success = self.container.robot.pick_up(grounding_return.object_infos[0], np_rgb, np_depth, task.objects_to_execute_on[0].name)
             self.state_dict["carrying_object"] = True
         elif task.task_type == TaskType.FIND:
             success = self.container.robot.point_at(grounding_return.object_infos[0], np_rgb, np_depth)

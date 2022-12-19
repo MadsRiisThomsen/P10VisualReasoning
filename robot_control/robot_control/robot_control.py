@@ -83,8 +83,19 @@ class RobotController:
         """
 
 
-    def pick_up(self, object_info: ObjectInfo, rgb, depth):
+
+    def pick_up(self, object_info: ObjectInfo, rgb, depth, object_location):
         rospy.loginfo("Waiting for server")
+
+        moveit.moveToNamed("ready_camera_1")
+        moveit.gripperOpen()
+        moveit.moveToNamed(object_location)
+        moveit.gripperClose()
+        moveit.moveToNamed("ready_camera_1")
+
+        return True
+
+        """
         self.client.wait_for_server()
 
         goal = PickObjectGoal()
@@ -99,9 +110,18 @@ class RobotController:
         result = self.client.get_result()
 
         return result.success
+        """
 
     def place(self, position, rgb):
         rospy.loginfo("Waiting for server")
+
+        moveit.moveToNamed("ready_camera_1")
+        moveit.moveToNamed("assembly_location")
+        moveit.gripperOpen()
+
+        return True
+
+        """
         self.client.wait_for_server()
 
         goal = PickObjectGoal()
@@ -116,6 +136,7 @@ class RobotController:
         self.client.wait_for_result()
         result = self.client.get_result()
         return result.success
+        """
 
     def point_at(self, object_info: ObjectInfo, rgb, depth):
         """
@@ -138,6 +159,8 @@ class RobotController:
 
         return result.success
         """
+        rospy.loginfo("Deprecated function, dont use it")
+        return True
 
 
         rospy.loginfo("Waiting for server")
@@ -156,6 +179,12 @@ class RobotController:
         return result.success
 
     def move_out_of_view(self):
+
+        moveit.moveToNamed("ready_camera_1")
+        self.is_home = True
+
+        return True
+
         """
         rospy.loginfo("Using out of view service")
 
@@ -166,7 +195,7 @@ class RobotController:
         self.is_home = result
 
         return result.success
-        """
+        
 
         self.client.wait_for_server()
 
@@ -181,6 +210,7 @@ class RobotController:
         self.is_home = result
 
         return result.success
+        """
 
     def is_out_of_view(self):
         return not self.is_home
