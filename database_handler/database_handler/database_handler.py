@@ -8,7 +8,7 @@ from ner_lib.command_builder import Task, TaskType, SpatialType, ObjectEntity, S
 class DatabaseHandler:
     def __init__(self, db_path):
         #self.conn = sqlite3.connect(db_path)
-        self.conn = sqlite3.connect("/home/mads/Desktop/catkin_ws/src/dialog_flow/nodes/grounding.db")
+        self.conn = sqlite3.connect("/home/robolab/mads_ws/src/P10VisualReasoning/dialog_flow/nodes/grounding.db")
         self.conn.execute("PRAGMA foreign_keys = ON;")
         #print("Opened database successfully")
 

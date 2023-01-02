@@ -41,7 +41,8 @@ class VisionController:
         return self.camera.get_image()
 
     def get_depth(self):
-        return self.camera.get_depth()
+        rospy.loginfo("Depth is not yet implemented for the franka")
+        return None
 
 
 if __name__ == "__main__":

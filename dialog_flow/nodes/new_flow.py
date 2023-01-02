@@ -95,13 +95,12 @@ def spatial_type_to_human_adjective(spatial_type: SpatialType):
 class DependencyContainer:
     def __init__(self, ner: NER, command_builder: CommandBuilder,
                  grounding: Grounding, speak,
-                 camera: RSCamera, task_grounding: TaskGrounding,
+                 task_grounding: TaskGrounding,
                  robot: RobotController, vision_controller: VisionController):
         self.ner = ner
         self.command_builder = command_builder
         self.grounding = grounding
         self.speak = speak
-        self.camera = camera
         self.task_grounding = task_grounding
         self.robot = robot
         self.vision_controller = vision_controller
@@ -461,22 +460,25 @@ class PerformTaskState(State):
 
     def perform_task(self, task):
         self.container.robot.move_out_of_view()
-        np_rgb = self.container.camera.get_image()
-        np_depth = self.container.camera.get_depth()
+        np_rgb = self.container.vision_controller.get_rgb()
+        #np_depth = self.container.camera.get_depth()
 
         grounding_return = None
         if task.task_type != TaskType.PLACE:
             grounding_return = self.container.grounding.find_object(task.objects_to_execute_on[0])
+            #grounding_return = True
             if not grounding_return.is_success:
                 self.state_dict["grounding_error"] = grounding_return.error_code
                 return False
 
+
         success = False
+        #######################################################################
         if task.task_type == TaskType.PICK:
-            success = self.container.robot.pick_up(grounding_return.object_infos[0], np_rgb, np_depth, task.objects_to_execute_on[0].name)
+            success = self.container.robot.pick_up(grounding_return.object_infos[0], np_rgb, task.objects_to_execute_on[0].name.lower())
             self.state_dict["carrying_object"] = True
         elif task.task_type == TaskType.FIND:
-            success = self.container.robot.point_at(grounding_return.object_infos[0], np_rgb, np_depth)
+            success = self.container.robot.point_at(grounding_return.object_infos[0], np_rgb)
         elif task.task_type == TaskType.PLACE:
             if not self.state_dict["carrying_object"]:
                 self.container.speak("The place task could not be accomplished as no object is carried.")
@@ -880,8 +882,8 @@ class VerifyCorrectObjectOnTableState(State):
             self.container.speak("I will now point to the object you want to teach me")
             object_info = objects[0]
             rgb_np = self.container.vision_controller.get_rgb()
-            depth_np = self.container.vision_controller.get_depth()
-            self.container.robot.point_at(object_info, rgb_np, depth_np)
+            #depth_np = self.container.vision_controller.get_depth()
+            self.container.robot.point_at(object_info, rgb_np)
             self.container.speak("Is this the correct item?")
             return self.wait_for_response_state
         else:
@@ -925,13 +927,16 @@ class DialogFlow:
         self.sentence = ""
         self.object_info = ObjectInfo()
         self.robot = RobotController()
-        self.camera = RSCamera()
+        #self.camera = RSCamera()  ##connect to camera with vision controller instead
+        rospy.loginfo("WE ARE PAST CAMERA, WOO")
         self.ner = NER(ner_model_path, ner_tag_path)
         self.command_builder = CommandBuilder(self.ner)
         self.last_received_sentence = None
         self.last_received_sentence_timestamp = None
+        #self.container = DependencyContainer(self.ner, self.command_builder, self.grounding, self.speak,
+        #                                     self.camera, self.task_grounding, self.robot, self.vision_controller)
         self.container = DependencyContainer(self.ner, self.command_builder, self.grounding, self.speak,
-                                             self.camera, self.task_grounding, self.robot, self.vision_controller)
+                                            self.task_grounding, self.robot, self.vision_controller)
         self.state_machine = StateMachine(self.container)
 
     def start(self):
@@ -949,15 +954,15 @@ class DialogFlow:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-n", "--ner_model", dest="ner_model_path", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/ner_pytorch_model.bin",
+    parser.add_argument("-n", "--ner_model", dest="ner_model_path", default="/home/robolab/mads_ws/src/P10VisualReasoning/dialog_flow/nodes/ner_pytorch_model.bin",
                         help="The path to the weight file for the NER model")
-    parser.add_argument("-t", "--tag_file", dest="tags_path", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/tags.txt",
+    parser.add_argument("-t", "--tag_file", dest="tags_path", default="/home/robolab/mads_ws/src/P10VisualReasoning/dialog_flow/nodes/tags.txt",
                         help="The path to the NER tags file")
-    parser.add_argument("-f", "--feature_model", dest="feature_model", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/feature_extraction.pth",
+    parser.add_argument("-f", "--feature_model", dest="feature_model", default="/home/robolab/mads_ws/src/P10VisualReasoning/dialog_flow/nodes/feature_extraction.pth",
                         help="The path to the feature extraction weight file")
-    parser.add_argument("-d", "--db", dest="grounding_database", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/grounding.db",
+    parser.add_argument("-d", "--db", dest="grounding_database", default="/home/robolab/mads_ws/src/P10VisualReasoning/dialog_flow/nodes/grounding.db",
                         help="The path to the grounding SQLite database")
-    parser.add_argument("-b", "--background", dest="background_image", default="/home/mads/Desktop/p10_ws/src/P10VisualReasoning/dialog_flow/nodes/background.png",
+    parser.add_argument("-b", "--background", dest="background_image", default="/home/robolab/mads_ws/src/P10VisualReasoning/dialog_flow/nodes/background.png",
                         help="The path to the background image")
     args = parser.parse_args(rospy.myargv()[1:])
     try:

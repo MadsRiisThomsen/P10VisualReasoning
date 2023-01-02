@@ -45,53 +45,29 @@ class RobotController:
     def __init__(self):
         self.bridge = CvBridge()
         self.is_home = True
-        self.client = actionlib.SimpleActionClient("pick_object", PickObjectAction)
 
-        """
-        moveit.setMaxVelocityScalingFactor(0.2)
+        moveit.setMaxVelocityScalingFactor(0.1)
         moveit.setMaxAcceleratoinScalingFactor(0.2)
         moveit.setPlanningTime(1.0)
         moveit.setNumPlanningAttempts(25)
 
-        fixture_1 = geometry_msgs.msg.Pose()
-        fixture_2 = geometry_msgs.msg.Pose()
-        fixture_3 = geometry_msgs.msg.Pose()
 
-        fixture_1.position.x = 0.000
-        fixture_1.position.y = 0.000
-        fixture_1.position.z = 0.000
-        fixture_1.orientation.x = 0.000
-        fixture_1.orientation.y = 0.000
-        fixture_1.orientation.z = 0.000
-        fixture_1.orientation.w = 0.000
-
-        fixture_2.position.x = 0.000
-        fixture_2.position.y = 0.000
-        fixture_2.position.z = 0.000
-        fixture_2.orientation.x = 0.000
-        fixture_2.orientation.y = 0.000
-        fixture_2.orientation.z = 0.000
-        fixture_2.orientation.w = 0.000
-
-        fixture_3.position.x = 0.000
-        fixture_3.position.y = 0.000
-        fixture_3.position.z = 0.000
-        fixture_3.orientation.x = 0.000
-        fixture_3.orientation.y = 0.000
-        fixture_3.orientation.z = 0.000
-        fixture_3.orientation.w = 0.000
-        """
-
-
-
-    def pick_up(self, object_info: ObjectInfo, rgb, depth, object_location):
+    def pick_up(self, object_info: ObjectInfo, rgb, object_location):
         rospy.loginfo("Waiting for server")
 
-        moveit.moveToNamed("ready_camera_1")
+        if self.is_home == False:
+            moveit.moveToNamed("camera_ready_1")
         moveit.gripperOpen()
-        moveit.moveToNamed(object_location)
+
+        if object_location == "white cover":
+            moveit.moveToNamed("left_fixture")
+        elif object_location == "pcb":
+            moveit.moveToNamed("middle_fixture")
+        elif object_location == "blue cover":
+            moveit.moveToNamed("right_fixture")
+        
         moveit.gripperClose()
-        moveit.moveToNamed("ready_camera_1")
+        moveit.moveToNamed("camera_ready_1")
 
         return True
 
@@ -115,7 +91,8 @@ class RobotController:
     def place(self, position, rgb):
         rospy.loginfo("Waiting for server")
 
-        moveit.moveToNamed("ready_camera_1")
+        if self.is_home == False:
+            moveit.moveToNamed("camera_ready_1")
         moveit.moveToNamed("assembly_location")
         moveit.gripperOpen()
 
@@ -138,7 +115,7 @@ class RobotController:
         return result.success
         """
 
-    def point_at(self, object_info: ObjectInfo, rgb, depth):
+    def point_at(self, object_info: ObjectInfo, rgb):
         """
         rospy.loginfo("Using point service")
 
@@ -180,7 +157,7 @@ class RobotController:
 
     def move_out_of_view(self):
 
-        moveit.moveToNamed("ready_camera_1")
+        moveit.moveToNamed("camera_ready_1")
         self.is_home = True
 
         return True
@@ -219,4 +196,4 @@ class RobotController:
 if __name__ == "__main__":
     rospy.init_node("controller", anonymous=True)
     controller = RobotController()
-    controller.move_out_of_view()
+    controller.grasp(0.5)
